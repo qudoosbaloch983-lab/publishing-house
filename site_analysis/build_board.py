@@ -1,106 +1,97 @@
-"""Compose the site-analysis presentation board.
+"""Compose the site-analysis presentation board as a 4K (3840 x 2160) PDF.
 
-The original survey drawing (original_site_analysis.jpg) is placed on the board
-unaltered: no crop, rotation, redraw or overlay. It is only scaled uniformly
-(same factor on both axes), so every photograph, leader line and red marker
-keeps its exact relative position. All new graphics sit OUTSIDE the map panel.
+The original survey drawing (original_site_analysis.jpg) keeps its geometry:
+no crop, rotation, redraw or overlay, only a uniform scale. The circular site
+photographs are converted to black and white; the blue drainage channel and
+red survey markers keep their colour. All new graphics sit outside the map.
 
-Edit the TEXT section below to change titles and notes, then run:
+Edit the TEXT section below, then run:
     python3 build_board.py
 """
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
+import numpy as np
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 HERE = Path(__file__).parent
 SRC = HERE / "original_site_analysis.jpg"
-OUT_PNG = HERE / "site_analysis_board.png"
-OUT_PDF = HERE / "site_analysis_board.pdf"
+OUT_PDF = HERE / "site_analysis_board_4k.pdf"
 
 # ---------------------------------------------------------------- palette
-BG = (244, 242, 237)        # light warm grey
-PAPER = (255, 255, 255)
-INK = (38, 38, 38)
-MUTED = (125, 120, 112)
-HAIR = (190, 185, 176)
-ACCENT = (196, 104, 60)     # muted terracotta (from reference)
-WATER = (46, 126, 160)      # matches the drawing's channel blue
-MARKER = (192, 57, 43)      # matches the drawing's red markers
+BG = (241, 240, 236)
+INK = (30, 30, 30)
+MUTED = (110, 108, 104)
+HAIR = (180, 178, 172)
+WATER = (46, 126, 160)
+MARKER = (192, 57, 43)
 
-# ---------------------------------------------------------------- fonts
 FD = "/usr/share/fonts/opentype/inter/"
 def f(w, s):
     return ImageFont.truetype(FD + f"Inter-{w}.otf", s)
 
 # ---------------------------------------------------------------- text
 TITLE = "SITE ANALYSIS"
-SUBTITLE = "Street life, activity nodes and the drainage channel — photographic survey"
-BOARD_NO = "01"
-
-CATEGORIES = [
-    ("Retail", "Shopfronts & kiosks"),
-    ("Street vending", "Fruit & vegetable carts"),
-    ("Workshops", "Storage sheds & yards"),
-    ("Transport", "Loaders, rickshaws, bikes"),
-    ("Solid waste", "Dumping on open edges"),
-    ("Water channel", "Open drain & green edge"),
-    ("Open ground", "Unbuilt plots, parking"),
-]
+SUBTITLE = "Street activity and the drainage channel: photographic survey"
 
 LEFT_NOTES = [
-    ("01", "Urban morphology",
-     "A dense, fine-grain fabric of small plots and narrow lanes. Building "
-     "footprints are tightly packed, leaving little public open space inside "
-     "the blocks; streets carry most everyday activity."),
-    ("02", "Drainage channel",
-     "The open channel (blue) runs as a continuous linear spine through the "
-     "site. Its edges alternate between green verges and neglected strips "
-     "used for dumping, splitting the neighbourhood into two halves."),
-    ("03", "Commercial frontage",
-     "Small shops, kiosks and vending carts gather along the main roads and "
-     "at street junctions, forming informal activity nodes."),
+    ("Urban morphology",
+     "Dense, fine-grain fabric of small plots and narrow lanes. Little open "
+     "space inside the blocks, so the streets carry most daily activity."),
+    ("Drainage channel",
+     "The open channel (blue) runs through the site as a continuous line. "
+     "Its edges switch between green verges and strips used for dumping."),
+    ("Commercial frontage",
+     "Shops, kiosks and vegetable carts gather on the main roads and at "
+     "junctions, forming small informal activity nodes."),
 ]
-
 RIGHT_NOTES = [
-    ("04", "Workshops & storage",
-     "Sheds with large metal doors and open yards indicate light industry "
-     "and storage mixed into the residential fabric."),
-    ("05", "Waste & open edges",
-     "Refuse accumulates on vacant plots, wall bases and along the channel — "
-     "edges without clear ownership or use."),
-    ("06", "Open ground",
-     "Large unbuilt land on the eastern side is used for loading and "
-     "parking; it is the main reserve of open space for the area."),
+    ("Workshops and storage",
+     "Sheds with large metal doors and open yards show light industry and "
+     "storage mixed into the housing."),
+    ("Waste",
+     "Refuse collects on vacant plots, at wall bases and along the channel, "
+     "on edges with no clear owner or use."),
+    ("Open ground",
+     "The large unbuilt land to the east is used for loading and parking. "
+     "It is the main open space left in the area."),
 ]
+FOOTNOTE = ("Photographs taken on site. Each is linked by a line to the red "
+            "point where it was taken.")
 
-FOOTNOTE = ("Observation points were recorded on site; each photograph is "
-            "linked by a leader line to the red marker where it was taken. "
-            "Base drawing reproduced without alteration.")
+# ---------------------------------------------------------------- photos to B&W
+def photos_to_bw(img):
+    a = np.asarray(img).astype(int)
+    # Photographs are filled discs; map linework is thin. An opening on the
+    # non-white mask keeps the discs and drops the lines.
+    nw = Image.fromarray(((a.min(2) < 238) * 255).astype(np.uint8))
+    m = nw.filter(ImageFilter.MinFilter(9)).filter(ImageFilter.MaxFilter(9))
+    m = m.filter(ImageFilter.MaxFilter(21)).filter(ImageFilter.MinFilter(11))
+    in_photo = np.asarray(m) > 0
+    saturated = np.asarray(img.convert("HSV"))[..., 1] > 70
+    keep_colour = saturated & ~in_photo      # blue channel, red markers
+    grey = np.asarray(img.convert("L").convert("RGB"))
+    out = np.where(keep_colour[..., None], np.asarray(img), grey)
+    return Image.fromarray(out.astype(np.uint8))
 
 # ---------------------------------------------------------------- layout
-W, H = 4961, 3508                    # A3 landscape @ 300 dpi
-M = 150                              # outer margin
-src = Image.open(SRC).convert("RGB")
-SCALE = 2.55                         # uniform scale only
+W, H = 3840, 2160
+M = 110
+src = photos_to_bw(Image.open(SRC).convert("RGB"))
+SCALE = 1.86
 mw, mh = round(src.width * SCALE), round(src.height * SCALE)
 map_img = src.resize((mw, mh), Image.LANCZOS)
 
 board = Image.new("RGB", (W, H), BG)
 d = ImageDraw.Draw(board)
 
-def text_w(t, font):
-    return d.textlength(t, font=font)
-
 def wrap(t, font, width):
-    words, lines, cur = t.split(), [], ""
-    for w_ in words:
+    lines, cur = [], ""
+    for w_ in t.split():
         trial = (cur + " " + w_).strip()
-        if text_w(trial, font) <= width:
+        if d.textlength(trial, font=font) <= width:
             cur = trial
         else:
             lines.append(cur); cur = w_
-    if cur:
-        lines.append(cur)
-    return lines
+    return lines + [cur] if cur else lines
 
 def para(x, y, t, font, width, fill=INK, lh=1.5):
     for line in wrap(t, font, width):
@@ -108,81 +99,53 @@ def para(x, y, t, font, width, fill=INK, lh=1.5):
         y += int(font.size * lh)
     return y
 
-# ---- header
-d.text((M, M - 20), TITLE, font=f("Bold", 120), fill=INK)
-tw = text_w(TITLE, f("Bold", 120))
-d.text((M + tw + 50, M + 52), SUBTITLE, font=f("Light", 46), fill=MUTED)
-nf = f("Thin", 150)
-d.text((W - M - text_w(BOARD_NO, nf), M - 45), BOARD_NO, font=nf, fill=ACCENT)
-d.line([(M, M + 160), (W - M, M + 160)], fill=INK, width=3)
+# header
+tf = f("Bold", 76)
+d.text((M, M - 10), TITLE, font=tf, fill=INK)
+d.text((M + d.textlength(TITLE, font=tf) + 36, M + 30), SUBTITLE,
+       font=f("Light", 32), fill=MUTED)
+d.line([(M, M + 105), (W - M, M + 105)], fill=INK, width=2)
 
-# ---- map panel (centre)
-COL_L = 620                          # side column width
-mx = M + COL_L + 70
-my = M + 520
-d.rectangle([mx - 2, my - 2, mx + mw + 1, my + mh + 1], outline=HAIR, width=2)
-board.paste(map_img, (mx, my))       # the original, unaltered
-cap_y = my + mh + 22
-d.text((mx, cap_y), "FIG. 01", font=f("SemiBold", 30), fill=ACCENT)
-d.text((mx + 140, cap_y), "Observation map — survey points, photographs and drainage channel",
-       font=f("Regular", 30), fill=MUTED)
+# map panel
+COL = 560
+mx = (W - mw) // 2
+my = M + 170
+d.rectangle([mx - 1, my - 1, mx + mw, my + mh], outline=HAIR, width=1)
+board.paste(map_img, (mx, my))
+d.text((mx, my + mh + 16), "Fig. 1  Observation map", font=f("Regular", 24), fill=MUTED)
 
-# ---- activity strip (above map)
-sy = M + 260
-cw = mw / len(CATEGORIES)
-for i, (name, sub) in enumerate(CATEGORIES):
-    cx = mx + i * cw
-    col = WATER if name == "Water channel" else ACCENT
-    d.ellipse([cx, sy + 8, cx + 36, sy + 44], outline=col, width=3)
-    d.text((cx + 18, sy + 26), f"{i+1}", font=f("SemiBold", 22), fill=col, anchor="mm")
-    d.text((cx + 54, sy), name.upper(), font=f("SemiBold", 34), fill=INK)
-    d.text((cx + 54, sy + 50), sub, font=f("Light", 28), fill=MUTED)
-    if i:
-        d.line([(cx - 25, sy + 5), (cx - 25, sy + 95)], fill=HAIR, width=2)
-d.line([(mx, sy + 170), (mx + mw, sy + 170)], fill=HAIR, width=2)
-
-# ---- side note columns
-def note_column(x, y, notes, width):
-    for num, head, body in notes:
-        d.text((x, y), num, font=f("Thin", 96), fill=ACCENT)
-        d.text((x + 150, y + 22), head.upper(), font=f("SemiBold", 38), fill=INK)
-        d.line([(x + 150, y + 82), (x + width, y + 82)], fill=HAIR, width=2)
-        y = para(x + 150, y + 108, body, f("Light", 30), width - 150, fill=INK, lh=1.55)
-        y += 90
+# notes
+def notes(x, y, items, width):
+    hf, bf = f("SemiBold", 28), f("Light", 25)
+    for head, body in items:
+        d.line([(x, y), (x + width, y)], fill=HAIR, width=1)
+        d.text((x, y + 18), head.upper(), font=hf, fill=INK)
+        y = para(x, y + 66, body, bf, width, lh=1.55) + 60
     return y
 
 lx = M
-note_column(lx, my, LEFT_NOTES, COL_L)
-rx = mx + mw + 70
+rx = mx + mw + (mx - M - COL)
 rw = W - M - rx
-note_column(rx, my, RIGHT_NOTES, rw)
+notes(lx, my, LEFT_NOTES, COL)
+notes(rx, my, RIGHT_NOTES, rw)
 
-# ---- legend (bottom of right column)
-ly = my + mh - 520
-d.text((rx, ly), "LEGEND", font=f("SemiBold", 38), fill=INK)
-d.line([(rx, ly + 60), (rx + rw, ly + 60)], fill=INK, width=2)
-ly += 110
-lf = f("Light", 32)
-# site photograph
-d.ellipse([rx, ly - 6, rx + 60, ly + 54], outline=INK, width=2)
-d.ellipse([rx + 12, ly + 6, rx + 48, ly + 42], fill=HAIR)
-d.text((rx + 100, ly + 6), "Site photograph", font=lf, fill=INK); ly += 105
-# survey point
-d.ellipse([rx + 20, ly + 10, rx + 40, ly + 30], fill=MARKER)
-d.text((rx + 100, ly + 2), "Survey / observation point", font=lf, fill=INK); ly += 90
-# leader
-d.line([(rx, ly + 20), (rx + 60, ly + 20)], fill=INK, width=2)
-d.text((rx + 100, ly + 2), "Photo leader line", font=lf, fill=INK); ly += 90
-# channel
-d.line([(rx, ly + 20), (rx + 60, ly + 20)], fill=WATER, width=8)
-d.text((rx + 100, ly + 2), "Water / drainage channel", font=lf, fill=INK); ly += 90
+# legend
+ly = my + mh - 330
+d.line([(rx, ly), (rx + rw, ly)], fill=INK, width=2)
+d.text((rx, ly + 18), "LEGEND", font=f("SemiBold", 28), fill=INK)
+ly += 90
+lf = f("Light", 25)
+d.ellipse([rx + 2, ly, rx + 42, ly + 40], outline=INK, width=2, fill=(150, 150, 150))
+d.text((rx + 70, ly + 6), "Site photograph", font=lf, fill=INK); ly += 65
+d.ellipse([rx + 15, ly + 12, rx + 29, ly + 26], fill=MARKER)
+d.text((rx + 70, ly + 4), "Survey point", font=lf, fill=INK); ly += 60
+d.line([(rx, ly + 18), (rx + 44, ly + 18)], fill=INK, width=2)
+d.text((rx + 70, ly + 4), "Photo reference line", font=lf, fill=INK); ly += 60
+d.line([(rx, ly + 18), (rx + 44, ly + 18)], fill=WATER, width=6)
+d.text((rx + 70, ly + 4), "Water / drainage channel", font=lf, fill=INK)
 
-# ---- footer
-fy = H - M - 40
-d.line([(M, fy - 40), (W - M, fy - 40)], fill=HAIR, width=2)
-d.text((M, fy), "NOTE", font=f("SemiBold", 28), fill=ACCENT)
-d.text((M + 110, fy), FOOTNOTE, font=f("Light", 28), fill=MUTED)
+# footer
+d.text((M, H - M + 10), FOOTNOTE, font=f("Light", 22), fill=MUTED)
 
-board.save(OUT_PNG, dpi=(300, 300))
 board.save(OUT_PDF, resolution=300)
-print("map placed at", (mx, my), "size", (mw, mh), "board", board.size)
+print("map", (mx, my, mw, mh), "board", board.size)
