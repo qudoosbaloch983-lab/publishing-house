@@ -1,0 +1,397 @@
+{
+ "site_area_sqft_from_cad": 113978.6,
+ "site_area_acres_from_cad": 2.617,
+ "site_area_stated_sqft": 112505,
+ "areas_sqft": {
+  "Cluster housing plots": 27225.0,
+  "Cluster shared courtyards": 10328.0,
+  "Apartment building footprints": 5412.0,
+  "Single housing plots": 5640.0,
+  "Commercial market": 4284.0,
+  "Community centre": 2048.0,
+  "Entrance plaza & community square": 1040.0,
+  "Shared gathering spaces": 5220.0,
+  "Central park & playground": 8624.0,
+  "Parks, gardens & landscape buffers": 17606.0,
+  "Pedestrian pathways": 5186.0,
+  "Roads & vehicular circulation": 17447.0,
+  "Services & utilities": 3918.0
+ },
+ "areas_pct": {
+  "Cluster housing plots": 23.9,
+  "Cluster shared courtyards": 9.1,
+  "Apartment building footprints": 4.7,
+  "Single housing plots": 4.9,
+  "Commercial market": 3.8,
+  "Community centre": 1.8,
+  "Entrance plaza & community square": 0.9,
+  "Shared gathering spaces": 4.6,
+  "Central park & playground": 7.6,
+  "Parks, gardens & landscape buffers": 15.4,
+  "Pedestrian pathways": 4.6,
+  "Roads & vehicular circulation": 15.3,
+  "Services & utilities": 3.4
+ },
+ "units": {
+  "Cluster 2.5 Marla": 14,
+  "Cluster 3 Marla": 18,
+  "Cluster 4 Marla": 8,
+  "Cluster total": 40,
+  "Apartments (2 blocks, G+3)": 24,
+  "Single houses 5 Marla": 5,
+  "TOTAL DWELLINGS": 69
+ },
+ "shops": 10,
+ "clusters": [
+  {
+   "cluster": "CLUSTER C1",
+   "type": "3M",
+   "houses": 8
+  },
+  {
+   "cluster": "CLUSTER C2",
+   "type": "2.5M",
+   "houses": 8
+  },
+  {
+   "cluster": "CLUSTER C3",
+   "type": "3M",
+   "houses": 10
+  },
+  {
+   "cluster": "CLUSTER C4",
+   "type": "2.5M",
+   "houses": 6
+  },
+  {
+   "cluster": "CLUSTER C5",
+   "type": "4M",
+   "houses": 8
+  }
+ ],
+ "houses": [
+  {
+   "id": "C1-01",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 562.5
+  },
+  {
+   "id": "C1-02",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 528.8
+  },
+  {
+   "id": "C1-03",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 562.5
+  },
+  {
+   "id": "C1-04",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 528.8
+  },
+  {
+   "id": "C1-05",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 562.5
+  },
+  {
+   "id": "C1-06",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 528.8
+  },
+  {
+   "id": "C1-07",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 562.5
+  },
+  {
+   "id": "C1-08",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 528.8
+  },
+  {
+   "id": "C2-01",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 450.0
+  },
+  {
+   "id": "C2-02",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 416.2
+  },
+  {
+   "id": "C2-03",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 450.0
+  },
+  {
+   "id": "C2-04",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 416.2
+  },
+  {
+   "id": "C2-05",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 450.0
+  },
+  {
+   "id": "C2-06",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 416.2
+  },
+  {
+   "id": "C2-07",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 450.0
+  },
+  {
+   "id": "C2-08",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 416.2
+  },
+  {
+   "id": "C3-01",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 550.0
+  },
+  {
+   "id": "C3-02",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 512.5
+  },
+  {
+   "id": "C3-03",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 550.0
+  },
+  {
+   "id": "C3-04",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 512.5
+  },
+  {
+   "id": "C3-05",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 550.0
+  },
+  {
+   "id": "C3-06",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 550.0
+  },
+  {
+   "id": "C3-07",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 512.5
+  },
+  {
+   "id": "C3-08",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 550.0
+  },
+  {
+   "id": "C3-09",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 512.5
+  },
+  {
+   "id": "C3-10",
+   "type": "3M",
+   "plot_sqft": 675.0,
+   "marla": 3.0,
+   "footprint_sqft": 550.0
+  },
+  {
+   "id": "C4-01",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 462.5
+  },
+  {
+   "id": "C4-02",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 462.5
+  },
+  {
+   "id": "C4-03",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 462.5
+  },
+  {
+   "id": "C4-04",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 462.5
+  },
+  {
+   "id": "C4-05",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 458.1
+  },
+  {
+   "id": "C4-06",
+   "type": "2.5M",
+   "plot_sqft": 562.5,
+   "marla": 2.5,
+   "footprint_sqft": 458.1
+  },
+  {
+   "id": "C5-01",
+   "type": "4M",
+   "plot_sqft": 900.0,
+   "marla": 4.0,
+   "footprint_sqft": 787.5
+  },
+  {
+   "id": "C5-02",
+   "type": "4M",
+   "plot_sqft": 900.0,
+   "marla": 4.0,
+   "footprint_sqft": 753.8
+  },
+  {
+   "id": "C5-03",
+   "type": "4M",
+   "plot_sqft": 900.0,
+   "marla": 4.0,
+   "footprint_sqft": 787.5
+  },
+  {
+   "id": "C5-04",
+   "type": "4M",
+   "plot_sqft": 900.0,
+   "marla": 4.0,
+   "footprint_sqft": 753.8
+  },
+  {
+   "id": "C5-05",
+   "type": "4M",
+   "plot_sqft": 900.0,
+   "marla": 4.0,
+   "footprint_sqft": 787.5
+  },
+  {
+   "id": "C5-06",
+   "type": "4M",
+   "plot_sqft": 900.0,
+   "marla": 4.0,
+   "footprint_sqft": 753.8
+  },
+  {
+   "id": "C5-07",
+   "type": "4M",
+   "plot_sqft": 900.0,
+   "marla": 4.0,
+   "footprint_sqft": 787.5
+  },
+  {
+   "id": "C5-08",
+   "type": "4M",
+   "plot_sqft": 900.0,
+   "marla": 4.0,
+   "footprint_sqft": 753.8
+  },
+  {
+   "id": "S-01",
+   "type": "5M-S",
+   "plot_sqft": 1128.0,
+   "marla": 5.01,
+   "footprint_sqft": 816.0
+  },
+  {
+   "id": "S-02",
+   "type": "5M-S",
+   "plot_sqft": 1128.0,
+   "marla": 5.01,
+   "footprint_sqft": 816.0
+  },
+  {
+   "id": "S-03",
+   "type": "5M-S",
+   "plot_sqft": 1128.0,
+   "marla": 5.01,
+   "footprint_sqft": 816.0
+  },
+  {
+   "id": "S-04",
+   "type": "5M-S",
+   "plot_sqft": 1128.0,
+   "marla": 5.01,
+   "footprint_sqft": 816.0
+  },
+  {
+   "id": "S-05",
+   "type": "5M-S",
+   "plot_sqft": 1128.0,
+   "marla": 5.01,
+   "footprint_sqft": 816.0
+  }
+ ],
+ "cluster_share_of_units_pct": 58.0,
+ "residential_land_sqft": {
+  "cluster": 37553,
+  "apartments_incl_commons": 7752,
+  "single": 5640
+ },
+ "density_du_per_acre": 26.4,
+ "est_population_at_6pphh": 414
+}
